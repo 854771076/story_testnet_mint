@@ -1,4 +1,6 @@
 ### 运行
+story_testnet_mint NFT脚本
+
 
 #### 安装环境
 
