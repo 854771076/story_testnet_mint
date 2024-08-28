@@ -47,6 +47,7 @@ def mint_StoryNFT(private_key):
         except Exception as e:
             logger.error(f'{address}-mint StoryNFT失败-ERROR：{e}')
             time.sleep(30)
+            raise ValueError(f'{address}-mint_COLNFT失败-ERROR：{e}')
 def mint_COLNFT(private_key):
     '''
     mint_COLNFT
@@ -68,7 +69,7 @@ def mint_COLNFT(private_key):
                     time.sleep(30)
         except Exception as e:
             logger.error(f'{address}-mint_COLNFT失败-ERROR：{e}')
-            time.sleep(30)
+            raise ValueError(f'{address}-mint_COLNFT失败-ERROR：{e}')
 def run(wallet):
     if wallet['is_mint2']==0:
         try:

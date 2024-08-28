@@ -2,3 +2,4 @@ web3
 loguru
 fake_useragent
 requests
+pandas
