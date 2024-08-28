@@ -1,0 +1,13 @@
+{
+    "name":"mint_COLNFT",
+    "address":"0x59a0B4E4074B2DB51B218A7cAb3B4F4715C8b360",
+    "abi":[
+        {   
+            "inputs": [{"name": "to", "type": "address"}],
+            "name": "safeMint",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ]
+}
