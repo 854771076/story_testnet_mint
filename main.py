@@ -35,18 +35,19 @@ def mint_StoryNFT(private_key):
     # 构建交易
     account = web3.eth.account.from_key(private_key)
     address=account.address
-    try:
-        while True:
-            tx_hash,status = web3tool.run_contract(StoryNF_func,address,private_key)
-            if status:
-                logger.success(f'{address}-mint StoryNFT成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
-            else:
-                logger.error(f'{address}-mint StoryNFT失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
-                retry+=1
-                time.sleep(30)
-    except Exception as e:
-        logger.error(f'{address}-mint StoryNFT失败-ERROR：{e}')
-        raise ValueError(f'{address}-mint StoryNFT失败-ERROR：{e}')
+    while True:
+        try:
+            
+                tx_hash,status = web3tool.run_contract(StoryNF_func,address,private_key)
+                if status:
+                    logger.success(f'{address}-mint StoryNFT成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                else:
+                    logger.error(f'{address}-mint StoryNFT失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                    retry+=1
+                    time.sleep(30)
+        except Exception as e:
+            logger.error(f'{address}-mint StoryNFT失败-ERROR：{e}')
+            time.sleep(30)
 def mint_COLNFT(private_key):
     '''
     mint_COLNFT
@@ -56,29 +57,20 @@ def mint_COLNFT(private_key):
     address=web3.to_checksum_address(address)
     mint_COLNFT_func=contracts['mint_COLNFT'].functions.safeMint(address)
     # 构建交易
-    
-    try:
-        while True:
-            tx_hash,status = web3tool.run_contract(mint_COLNFT_func,address,private_key)
-            if status:
-                logger.success(f'{address}-mint_COLNFT成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
-                break
-            else:
-                logger.error(f'{address}-mint_COLNFT失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
-                time.sleep(30)
-    except Exception as e:
-        logger.error(f'{address}-mint_COLNFT失败-ERROR：{e}')
-        raise ValueError(f'{address}-mint_COLNFT失败-ERROR：{e}')
-def run(wallet):
-    if wallet['is_mint1']==0:
+    while True:
         try:
-            mint_StoryNFT(wallet['private_key'])
-            wallet['is_mint1']=1
+            
+                tx_hash,status = web3tool.run_contract(mint_COLNFT_func,address,private_key)
+                if status:
+                    logger.success(f'{address}-mint_COLNFT成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                    break
+                else:
+                    logger.error(f'{address}-mint_COLNFT失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                    time.sleep(30)
         except Exception as e:
-            wallet['is_mint1']=0
-    else:
-        pass
-    time.sleep(10)
+            logger.error(f'{address}-mint_COLNFT失败-ERROR：{e}')
+            time.sleep(30)
+def run(wallet):
     if wallet['is_mint2']==0:
         try:
             mint_COLNFT(wallet['private_key'])
@@ -87,6 +79,17 @@ def run(wallet):
             wallet['is_mint2']=0
     else:
         pass
+    time.sleep(10)
+    if wallet['is_mint1']==0:
+        try:
+            mint_StoryNFT(wallet['private_key'])
+            wallet['is_mint1']=1
+        except Exception as e:
+            wallet['is_mint1']=0
+    else:
+        pass
+    
+    
 if __name__=='__main__':
     get_contract()
     wallets=pd.read_csv(wallet_base_path).to_dict(orient='records')
