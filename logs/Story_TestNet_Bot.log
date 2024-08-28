@@ -1,0 +1,1 @@
+2024-08-28 21:31:10.471 | ERROR    | __main__:mint_StoryNFT:48 - 0x7602280DF886111Dbb5D842EFF22622C775B978B-mint StoryNFT失败-ERROR：Error in running contract function: {'code': -32000, 'message': 'tx fee (1.11 ether) exceeds the configured cap (1.00 ether)'}
