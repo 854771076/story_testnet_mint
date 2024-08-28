@@ -43,7 +43,6 @@ def mint_StoryNFT(private_key):
                     logger.success(f'{address}-mint StoryNFT成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
                 else:
                     logger.error(f'{address}-mint StoryNFT失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
-                    retry+=1
                     time.sleep(30)
         except Exception as e:
             logger.error(f'{address}-mint StoryNFT失败-ERROR：{e}')
