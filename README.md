@@ -10,9 +10,10 @@ pip install -r requirements.txt
 
 添加钱包
 
-wallet.csv
+wallet.csv放private_key私钥
 
-| private_key<br />私钥 | is_mint1<br />StoryNFT完成状态（默认0） | is_mint2<br />COLNFT完成状态（默认0） |
-| --------------------- | --------------------------------------- | ------------------------------------- |
+twocaptcha_apikey='xxx'
+
+放入[Proxy (2captcha.com)](https://2captcha.com/proxy)的token
 
 python main.py

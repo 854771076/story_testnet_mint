@@ -26,3 +26,5 @@
 2024-08-29 20:16:44.245 | SUCCESS  | __main__:mint_COLNFT:94 - 0xf6a98074Ec269C2bdAA2d04256BdE7257fd935ad-mint_COLNFT成功-Transaction-交易哈希: b'%=\x04\xed:E\x05D}\x11\xba\xb2X\xf7n\xd1\xc7/B|\xe6o\xd2\xd0\xbc\x00\x02q\xc4qo\x92'-交易状态: 1
 2024-08-29 20:17:15.128 | SUCCESS  | __main__:mint_StoryNFT:49 - 0xf6a98074Ec269C2bdAA2d04256BdE7257fd935ad-mint StoryNFT成功-Transaction-交易哈希: b'K\xc4h\xa5\xa4\xbd\xcb\xfd\\\xa60g\xa6\x04k\x899y\xe7\xea\xdf&q F\x8fF\xd4\xcfW\x1b\xb0'-交易状态: 1
 2024-08-29 20:17:15.757 | ERROR    | __main__:mint_StoryNFT:54 - 0xf6a98074Ec269C2bdAA2d04256BdE7257fd935ad-mint StoryNFT失败-ERROR：Error in running contract function: ('execution reverted: Already minted', '0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e416c7265616479206d696e746564000000000000000000000000000000000000')
+2024-08-29 20:23:31.873 | ERROR    | __main__:<module>:220 - Error: Non-hexadecimal digit found
+2024-08-29 20:24:08.714 | ERROR    | __main__:<module>:220 - Error: Non-hexadecimal digit found
