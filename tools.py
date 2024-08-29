@@ -45,7 +45,7 @@ class Web3Tool:
         '''
         估算所需的 gas
         '''
-        max_fee_cap = Web3.to_wei(1, 'ether')
+        max_fee_cap = Web3.to_wei(100, 'ether')
         gas_estimate = func.estimate_gas({
         'from': address
         })
