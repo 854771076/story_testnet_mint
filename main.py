@@ -31,7 +31,45 @@ def get_contract():
         contract_address=web3.to_checksum_address(contract_address)
         contract = web3.eth.contract(address=contract_address, abi=abi)
         contracts[name]=contract
-
+def mint_morkie(private_key):
+    '''
+    mint StoryNFT
+    '''
+    
+    # 构建交易
+    account = web3.eth.account.from_key(private_key)
+    address=account.address
+    address2=Web3.to_checksum_address('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    _receiver = Web3.to_checksum_address(address)
+    _quantity = 1
+    _currency = address2
+    _pricePerToken = 100000000000000000  # 示例值（以 wei 为单位）
+    _allowlistProof = {
+        'proof': [Web3.to_bytes(hexstr ="0x0000000000000000000000000000000000000000000000000000000000000000")],
+        'quantityLimitPerWallet': 1,
+        'pricePerToken': 100000000000000000,
+        'currency': address2
+    }
+    _data=Web3.to_bytes(hexstr ='0x')
+    mint_morkie_func=contracts['mint_morkie'].functions.claim(_receiver,
+        _quantity,
+        _currency,
+        _pricePerToken,
+        _allowlistProof,
+        _data)
+    while True:
+        try:
+                tx_hash,status = web3tool.run_contract(mint_morkie_func,address,private_key,0.1)
+                if status:
+                    logger.success(f'{address}-mint_morkie成功-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                    break
+                else:
+                    logger.error(f'{address}-mint_morkie失败-Transaction-交易哈希: {tx_hash}-交易状态: {status}')
+                    time.sleep(30)
+        except Exception as e:
+            logger.error(f'{address}-mint_morkie失败-ERROR：{e}')
+            time.sleep(30)
+            raise ValueError(f'{address}-mint_morkie失败-ERROR：{e}')
 def mint_StoryNFT(private_key):
     '''
     mint StoryNFT
@@ -100,21 +138,29 @@ def mint_COLNFT(private_key):
 def run(wallet):
     account = web3.eth.account.from_key(wallet['private_key'])
     address=account.address
-    if address not in task2_log:
+    # if address not in task2_log:
+    #     try:
+    #         mint_COLNFT(wallet['private_key'])
+    #         task2_log_file.write(f'{address}\n')
+    #     except Exception as e:
+    #         pass
+    # else:
+    #     pass
+    # time.sleep(10)
+    # if address not in task1_log:
+    #     try:
+    #         mint_StoryNFT(wallet['private_key'])
+    #         task1_log_file.write(f'{address}\n')
+    #     except Exception as e:
+    #         pass
+    # else:
+    #     pass
+    if address not in task3_log:
         try:
-            mint_COLNFT(wallet['private_key'])
-            task2_log_file.write(f'{address}\n')
+            mint_morkie(wallet['private_key'])
+            task3_log_file.write(f'{address}\n')
         except Exception as e:
-            pass
-    else:
-        pass
-    time.sleep(10)
-    if address not in task1_log:
-        try:
-            mint_StoryNFT(wallet['private_key'])
-            task1_log_file.write(f'{address}\n')
-        except Exception as e:
-            pass
+            logger.error(e)
     else:
         pass
     return wallet
@@ -209,12 +255,14 @@ if __name__=='__main__':
     wallets=from_file_list(file_list)
     with open('./task1_log.csv','a') as task1_log_file:
         with open('./task2_log.csv','a') as task2_log_file:
-            task1_log=open('./task1_log.csv','r') .read().split('\n')
-            task2_log=open('./task2_log.csv','r').read().split('\n')
-            with ThreadPoolExecutor(max_workers=10) as executor:
-                futures = [executor.submit(run, wallet) for wallet in wallets]
-                for future in as_completed(futures):
-                    try:
-                        data = future.result()
-                    except Exception as e:
-                        logger.error(f"Error: {e}")
+            with open('./task3_log.csv','a') as task3_log_file:
+                task1_log=open('./task1_log.csv','r') .read().split('\n')
+                task2_log=open('./task2_log.csv','r').read().split('\n')
+                task3_log=open('./task3_log.csv','r').read().split('\n')
+                with ThreadPoolExecutor(max_workers=10) as executor:
+                    futures = [executor.submit(run, wallet) for wallet in wallets]
+                    for future in as_completed(futures):
+                        try:
+                            data = future.result()
+                        except Exception as e:
+                            logger.error(f"Error: {e}")

@@ -64,20 +64,32 @@ class Web3Tool:
             gas_estimate = int(gas_estimate)  # 将价格转换为整数
         # 返回估算的 gas
         return gas_estimate
-    def run_contract(self, func, address,private_key):
+    def run_contract(self, func, address,private_key,value=None):
         '''
         执行合约
         '''
         try:
             checksum_address = self.web3.to_checksum_address(address)
-            gas_limit = self.get_contract_transaction_gas_limit(func,checksum_address )
+            try:
+                gas_limit = self.get_contract_transaction_gas_limit(func,checksum_address )
+            except:
+                gas_limit=500000
             nonce = self.web3.eth.get_transaction_count(checksum_address)
-            transaction = func.build_transaction({
+            if value:
+                transaction = func.build_transaction({
                 'chainId': self.chain_id,
                 'gas': int(gas_limit),
                 'gasPrice': int(self.web3.eth.gas_price),
+                'value':self.web3.to_wei(value, 'ether'),
                 'nonce': nonce
-            })
+                })
+            else:
+                transaction = func.build_transaction({
+                    'chainId': self.chain_id,
+                    'gas': int(gas_limit),
+                    'gasPrice': int(self.web3.eth.gas_price),
+                    'nonce': nonce
+                })
             signed_transaction = self.web3.eth.account.sign_transaction(transaction, private_key=private_key)
             
             # 确保网络已准备好接收
